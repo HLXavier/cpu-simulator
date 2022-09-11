@@ -1,0 +1,13 @@
+.code
+    load a 
+    ponto1:
+        sub #1
+    fim:
+    syscall 1
+    brpos 2
+    syscall 0
+.endcode
+
+.data
+    a 10
+.enddata
