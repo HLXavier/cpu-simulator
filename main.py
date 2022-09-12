@@ -1,9 +1,11 @@
 from program import Program
+from process import Process
 
 
 program = Program('programs/test')
+process = Process(program)
 
-print(f'code:   {program.code}')
-print(f'data:   {program.data}')
-print(f'labels: {program.labels}')
+message = ''
 
+while message != 'exit':
+    message = process.step()
