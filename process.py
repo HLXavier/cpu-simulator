@@ -1,6 +1,7 @@
 class Process: 
 
     EXIT = 'exit'
+    PRINT = 'print'
     INPUT = 'input'
 
     def __init__(self, program):
@@ -115,11 +116,7 @@ class Process:
             return self.EXIT
         
         if op == '1':
-            print(self.acc)
+            return self.PRINT
 
         if op == '2':
             return self.INPUT
-    
-
-    def receive_input(self, input):
-        self.acc = input

@@ -1,11 +1,12 @@
-from program import Program
-from process import Process
+from scheduler import Scheduler
 
+s = Scheduler()
 
-program = Program('programs/test')
-process = Process(program)
+# processos iguais pode dar ruim com o .remove(pcb)
+s.add_process('programs/test2', 0, 1)
+s.add_process('programs/test2', 2, 1)
+s.add_process('programs/test2', 4, 1)
 
-message = ''
+s.run()
 
-while message != 'exit':
-    message = process.step()
+print(s.exit)

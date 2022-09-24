@@ -1,0 +1,6 @@
+.code
+    syscall 0
+.endcode
+fim
+.data
+.enddata
