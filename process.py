@@ -116,7 +116,9 @@ class Process:
             return self.EXIT
         
         if op == '1':
+            print(self.acc)
             return self.PRINT
 
         if op == '2':
+            self.acc = int(input())
             return self.INPUT

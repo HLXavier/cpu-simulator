@@ -12,7 +12,8 @@ class Scheduler:
 
         self.processes = []
         
-        self.new = []
+        self.new = []    
+        self.processes = []
         self.ready = []
 
         self.running = None
@@ -31,10 +32,7 @@ class Scheduler:
 
 
     def run(self):
-        self.handle_blocked()
-        self.handle_new()
-
-        while len(self.ready) or len(self.blocked):
+        while self.ready or self.blocked or self.new or self.running:
             if self.time >= self.until:
                 self.schedule()
             
@@ -43,22 +41,30 @@ class Scheduler:
                 self.handle_result(result)
 
             self.time += self.step
+        
+        print(f'time: {self.time}, simulation ended')
 
 
     def schedule(self):
+        self.handle_blocked()
+        self.handle_new()
+
         if self.running:
+            print(f'time: {self.time}, to ready: {self.running.pid}')
             self.ready.append(self.running) # w/o priority
         
         if self.ready:
             self.running = self.ready.pop(0)
             self.until = self.time + self.running.quantum
-
+            print(f'time: {self.time}, to running: {self.running.pid}')
+    
     
     def handle_new(self):
         for pcb in self.new:
             if  pcb.arrival == self.time:
                 self.new.remove(pcb)
                 self.ready.append(pcb)
+                print(f'time: {self.time}, process arrived: {pcb.pid}')
     
 
     def handle_result(self, result):
@@ -66,10 +72,12 @@ class Scheduler:
             return
         
         if result == Process.EXIT:
+            print(f'time: {self.time}, process exited: {self.running.pid}')
             self.exit.append(self.running)
             self.running = None
-            
+        
         if result in [Process.PRINT, Process.INPUT]:
+            print(f'time: {self.time}, process blocked: {self.running.pid} ({result})')
             self.blocked.append((self.running, self.time + randint(10, 15)))
             self.running = None
 
@@ -80,18 +88,19 @@ class Scheduler:
         for blocked in self.blocked:
             pcb, time = blocked
 
-            if time >= self.time:
+            if self.time >= time:
                 self.blocked.remove(blocked)
                 self.ready.append(pcb)
+                print(f'time: {self.time}, process unblocked: {pcb.pid}')
          
 
 # ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣴⣶⣿⣿⣷⣶⣄⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 # ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣾⣿⣿⡿⢿⣿⣿⣿⣿⣿⣿⣿⣷⣦⡀⠀⠀⠀⠀⠀
 # ⠀⠀⠀⠀⠀⠀⠀⢀⣾⣿⣿⡟⠁⣰⣿⣿⣿⡿⠿⠻⠿⣿⣿⣿⣿⣧⠀⠀⠀⠀
 # ⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⠏⠀⣴⣿⣿⣿⠉⠀⠀⠀⠀⠀⠈⢻⣿⣿⣇⠀⠀⠀
-# ⠀⠀⠀⠀⢀⣠⣼⣿⣿⡏⠀⢠⣿⣿⣿⠇kinda sus⠈⣿⣿⣿⡀⠀⠀
+# ⠀⠀⠀⠀⢀⣠⣼⣿⣿⡏⠀⢠⣿⣿⣿⠇kinda sus⠈⣿⣿⣿⠀⠀
 # ⠀⠀⠀⣰⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣿⡀⠀hessel⠀ ⣿⣿⣿⡇⠀⠀
-# ⠀⠀⢰⣿⣿⡿⣿⣿⣿⡇⠀⠘⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⢀⣸⣿⣿⣿⠁⠀⠀
+# ⠀⠀⢰⣿⣿⡿⣿⣿⣿⡇⠀⠘⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⢀⣸⣿⣿⣿⠀⠀
 # ⠀⠀⣿⣿⣿⠁⣿⣿⣿⡇⠀⠀⠻⣿⣿⣿⣷⣶⣶⣶⣶⣶⣿⣿⣿⣿⠃⠀⠀⠀
 # ⠀⢰⣿⣿⡇⠀⣿⣿⣿⠀⠀⠀⠀⠈⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠁⠀⠀⠀⠀
 # ⠀⢸⣿⣿⡇⠀⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⠛⠉⢉⣿⣿⠀⠀⠀⠀⠀⠀

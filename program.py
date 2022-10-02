@@ -8,16 +8,17 @@ class Program:
 
 
     def __init__(self, path):
+        self.path = path
         self.code = []
         self.data = []
         self.labels = {}
 
-        self.read_file(path)
+        self.read_file()
         
 
-    def read_file(self, path):
+    def read_file(self):
         
-        program = convert_file(path)
+        program = self.convert_file()
 
         self.get_code(program)
         self.get_data(program)
@@ -44,7 +45,7 @@ class Program:
                 self.labels[line[:-1]] = i
 
 
-def convert_file(path):
-    file = open(path, 'r')
-    file = file.read().split('\n')
-    return [line.strip() for line in file if line]
+    def convert_file(self):
+        file = open(self.path, 'r')
+        file = file.read().split('\n')
+        return [line.strip() for line in file if line]
