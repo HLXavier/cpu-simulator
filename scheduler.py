@@ -56,15 +56,19 @@ class Scheduler:
             self.ready.append(self.running) # w/o priority
         
         if self.ready:
+            self.ready.sort(key=lambda pcd: pcd.priority)
             self.running = self.ready.pop(0)
             self.until = self.time + self.running.timeout
             self.time_tracker.register_event(self.time, self.running.pid, 'running')
     
     
     def handle_new(self):
-        for pcb in self.new:
+        removed_count = 0
+        for i in range(len(self.new)):
+            pcb = self.new[i - removed_count]
             if  pcb.arrival <= self.time:
                 self.new.remove(pcb)
+                removed_count += 1
                 self.ready.append(pcb)
                 self.time_tracker.register_event(self.time, pcb.pid, 'ready')
     

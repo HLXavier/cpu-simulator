@@ -6,9 +6,9 @@ tracker = TimeTracker(no_log=False)
 s = Scheduler(tracker)
 
 # processos iguais pode dar ruim com o .remove(pcb)
-s.add_process('programs/test', 0, 4)
-s.add_process('programs/test', 2, 2)
-s.add_process('programs/test', 4, 1)
+s.add_process('programs/test', 0, 1, priority=0)
+s.add_process('programs/test', 0, 1, priority=2)
+s.add_process('programs/test', 0, 1, priority=2)
 
 s.run()
 
