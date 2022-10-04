@@ -3,6 +3,7 @@
 ponto1:
     sub #1
 fim:
+    syscall 1
     brpos ponto1
     syscall 0
 .endcode
