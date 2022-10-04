@@ -4,6 +4,10 @@ Integrantes:
 - Vinicius Saliba
 - Fernanda Rosa
 
+**ATENÇÃO**
+Comentarios no codigo não são suportados!
+O código não diferencia maiúsculas de minúsculas!
+
 Como rodar:
 pip3 install -r requirements.txt
 python3 main.py
