@@ -30,7 +30,6 @@ class Program:
         end = program.index(self.CODE_END)
         self.code = program[start+1 : end]
 
-
     def get_data(self, program):
         start = program.index(self.DATA_START)
         end = program.index(self.DATA_END)
@@ -44,8 +43,7 @@ class Program:
             if line[-1] == ':':
                 self.labels[line[:-1]] = i
 
-
     def convert_file(self):
         file = open(self.path, 'r')
-        file = file.read().split('\n')
+        file = file.read().lower().split('\n')
         return [line.strip() for line in file if line]

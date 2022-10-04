@@ -7,7 +7,7 @@ fim:
     brpos ponto1
     syscall 0
 .endcode
-fim
+
 .data
     a 5
 .enddata

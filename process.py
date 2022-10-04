@@ -29,6 +29,7 @@ class Process:
             'brneg': self.brneg,
 
             'syscall': self.syscall,
+            'dump': self.dump
         }
 
     
@@ -45,7 +46,8 @@ class Process:
 
         command, op = line.split(' ')
 
-        op = self.handle_op(op)
+        if command in ['add', 'sub', 'mult', 'div', 'load']:
+            op = self.handle_op(op)
 
         return self.commands[command](op)
 
@@ -83,7 +85,7 @@ class Process:
 
 
     def store(self, op):
-        self.memory[op]
+        self.memory[op] = self.acc
     
 
     # Jumps
@@ -108,6 +110,10 @@ class Process:
     
     def jump(self, op):
         self.pc = self.program.labels[op]
+
+
+    def dump(self, op):
+        print(f'Dump:\n\tMem: {self.memory}\n\tAcc: {self.acc}')
         
         
     # System
