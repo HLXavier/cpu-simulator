@@ -1,3 +1,4 @@
+from logging import lastResort
 from random import randint
 from process import Process
 from program import Program
@@ -49,18 +50,24 @@ class Scheduler:
 
 
     def schedule(self):
-        self.handle_blocked()        
+        self.handle_blocked()
+
+        last_running = self.running     
 
         if self.running:
-            self.time_tracker.register_event(self.time, self.running.pid, 'ready')
             self.ready.append(self.running) # w/o priority
         
         if self.ready:
             self.ready.sort(key=lambda pcd: pcd.priority)
             self.running = self.ready.pop(0)
             self.until = self.time + self.running.timeout
-            self.time_tracker.register_event(self.time, self.running.pid, 'running')
     
+        running_changed = self.running != last_running
+        if last_running and running_changed:
+            self.time_tracker.register_event(self.time, last_running.pid, 'ready')
+            
+        if self.running and running_changed:
+            self.time_tracker.register_event(self.time, self.running.pid, 'running')
     
     def handle_new(self):
         removed_count = 0
