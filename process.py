@@ -11,7 +11,7 @@ class Process:
         self.memory = {}
 
         for line in program.data:
-            var, value = line.split(' ')
+            var, value, *_ = line.split()
             self.memory[var] = int(value)
 
         self.commands = {
@@ -44,7 +44,7 @@ class Process:
         if line[-1] == ':': 
             return 
 
-        command, op = line.split(' ')
+        command, op, *_ = line.split()
 
         if command in ['add', 'sub', 'mult', 'div', 'load']:
             op = self.handle_op(op)
