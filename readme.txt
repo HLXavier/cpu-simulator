@@ -10,3 +10,6 @@ python3 main.py
 
 Para ver as transições de estado:
 python3 main.py --log-transitions
+
+Para desabilitar exibição do diagrama de gantt:
+python3 main.py --no-gantt
