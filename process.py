@@ -76,7 +76,7 @@ class Process:
 
 
     def div(self, op):
-        self.acc /= op
+        self.acc //= op
 
 
     # Memory
@@ -122,9 +122,10 @@ class Process:
             return self.EXIT
         
         if op == '1':
-            print(self.acc)
+            print(f'output: {self.acc}')
             return self.PRINT
 
         if op == '2':
+            print('input:')
             self.acc = int(input())
             return self.INPUT
